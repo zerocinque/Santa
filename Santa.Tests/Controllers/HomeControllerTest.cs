@@ -7,7 +7,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Santa;
 using Santa.Controllers;
 
-namespace Santa.Tests.Controllers
+namespace Santa.UnitTests.Controllers
 {
     [TestClass]
     public class HomeControllerTest

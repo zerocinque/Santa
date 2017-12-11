@@ -1,7 +1,7 @@
 ﻿using MongoDB.Driver;
 using System.Configuration;
 
-namespace Classes
+namespace Santa.Classes
 {
     public static class MongoDBConfig
     {

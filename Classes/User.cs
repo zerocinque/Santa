@@ -1,7 +1,7 @@
 ﻿using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 
-namespace Classes
+namespace Santa.Classes
 {
     [BsonIgnoreExtraElements]
     public class User

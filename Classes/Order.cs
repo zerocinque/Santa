@@ -3,26 +3,26 @@ using MongoDB.Bson.Serialization.Attributes;
 using System;
 using System.Collections.Generic;
 
-namespace Classes
+namespace Santa.Classes
 {
     public class Order
     {
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
-        public string ID { get; private set; }
+        public string ID { get; set; }
 
         [BsonElement("kid")]
-        public string Kid { get; private set; }
+        public string Kid { get; set; }
 
         [BsonElement("status")]
         public OrderStatus Status { get; set; }
 
         [BsonElement("toys")]
-        public IEnumerable<Object> Toys { get; private set; }
+        public IEnumerable<Object> Toys { get; set; }
 
         [BsonElement("requestDate")]
         [BsonDateTimeOptions(Kind = DateTimeKind.Local)]
-        public DateTime RequestDate { get; private set; }
+        public DateTime RequestDate { get; set; }
 
     }
 }

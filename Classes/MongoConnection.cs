@@ -1,6 +1,6 @@
 ﻿using MongoDB.Driver;
 
-namespace Classes
+namespace Santa.Classes
 {
     internal sealed class MongoConnection
     {

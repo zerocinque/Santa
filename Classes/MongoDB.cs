@@ -1,5 +1,4 @@
-﻿using Classes;
-using MongoDB.Bson;
+﻿using MongoDB.Bson;
 using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
@@ -48,6 +47,8 @@ namespace Santa.Classes
 
         public bool UpdateOrder(Order order)
         {
+            if (order.ID == null)
+                throw new ArgumentNullException();
             IMongoCollection<Order> orderCollection = database.GetCollection<Order>("orders");
             var filter = Builders<Order>.Filter.Eq("_id", ObjectId.Parse(order.ID));
             var update = Builders<Order>.Update
