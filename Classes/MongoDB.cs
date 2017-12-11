@@ -8,34 +8,59 @@ namespace Santa.Classes
 {
     public class MongoDB : IDataBase
     {
+        private IMongoDatabase database
+        {
+            get
+            {
+                return MongoConnection.Instance.Database;
+            }
+        }
+
         public IEnumerable<Order> GetAllOrders()
         {
-            throw new NotImplementedException();
+            IMongoCollection<Order> orderCollection = database.GetCollection<Order>("orders");
+            return orderCollection.Find(new BsonDocument()).ToList();
         }
 
         public IEnumerable<Toy> GetAllToys()
         {
-            throw new NotImplementedException();
+            IMongoCollection<Toy> toyCollection = database.GetCollection<Toy>("toys");
+            return toyCollection.Find(new BsonDocument()).ToList();
         }
 
-        public Order GetOrder()
+        public Order GetOrder(string id)
         {
-            throw new NotImplementedException();
+            IMongoCollection<Order> orderCollection = database.GetCollection<Order>("orders");
+            return orderCollection.Find(_ => _.ID == id).FirstOrDefault();
         }
 
-        public Toy GetToy()
+        public Toy GetToy(string id)
         {
-            throw new NotImplementedException();
+            IMongoCollection<Toy> toyCollection = database.GetCollection<Toy>("toys");
+            return toyCollection.Find(_ => _.ID == id).FirstOrDefault();
         }
 
-        public User GetUser()
+        public User GetUser(User user)
         {
-            throw new NotImplementedException();
+            IMongoCollection<User> userCollection = database.GetCollection<User>("users");
+            return userCollection.Find(_ => _.Email == user.Email && _.Password == user.Password).FirstOrDefault();
         }
 
-        public Order UpdateOrder(Order order)
+        public bool UpdateOrder(Order order)
         {
-            throw new NotImplementedException();
+            IMongoCollection<Order> orderCollection = database.GetCollection<Order>("orders");
+            var filter = Builders<Order>.Filter.Eq("_id", ObjectId.Parse(order.ID));
+            var update = Builders<Order>.Update
+                .Set("status", order.Status);
+            try
+            {
+                orderCollection.UpdateOne(filter, update);
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
     }
 }

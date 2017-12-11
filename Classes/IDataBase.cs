@@ -4,13 +4,13 @@ namespace Classes
 {
     public interface IDataBase
     {
-        Order UpdateOrder(Order order);
+        bool UpdateOrder(Order order);
 
         IEnumerable<Order> GetAllOrders();
         IEnumerable<Toy> GetAllToys();
 
-        Order GetOrder();
-        Toy GetToy();
-        User GetUser();
+        Order GetOrder(string id);
+        Toy GetToy(string id);
+        User GetUser(User user);
     }
 }

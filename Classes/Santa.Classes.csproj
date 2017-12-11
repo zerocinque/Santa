@@ -59,6 +59,7 @@
     <Compile Include="MongoDBConfig.cs" />
     <Compile Include="Order.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="OrderStatus.cs" />
     <Compile Include="Toy.cs" />
     <Compile Include="User.cs" />
   </ItemGroup>
