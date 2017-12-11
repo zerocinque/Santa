@@ -1,0 +1,7 @@
+﻿<appSettings>
+  <add key="DBName" value="DBNAME" />
+  <add key="Username" value="USERNAME" />
+  <add key="Password" value="PASSWORD" />
+  <add key="Host" value="HOST" />
+  <add key="Port" value="PORT" />
+</appSettings>
