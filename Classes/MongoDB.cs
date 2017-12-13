@@ -2,6 +2,7 @@
 using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 
 namespace Santa.Classes
 {
@@ -18,7 +19,27 @@ namespace Santa.Classes
         public IEnumerable<Order> GetAllOrders()
         {
             IMongoCollection<Order> orderCollection = database.GetCollection<Order>("orders");
-            return orderCollection.Find(new BsonDocument()).ToList();
+            List<Order> orders = orderCollection.Find(new BsonDocument()).ToList();
+            foreach(Order order in orders)
+            {
+                List<Toy> distinctToys = new List<Toy>();
+                foreach(Toy originalToy in order.Toys)
+                {
+                    bool flag = true;
+                    foreach(Toy toy in distinctToys)
+                    {
+                        if (toy.Name.Equals(originalToy.Name))
+                        {
+                            flag = false;
+                            break;
+                        }
+                    }
+                    if (flag)
+                        distinctToys.Add(originalToy);
+                }
+                order.Toys = distinctToys;
+            }
+            return orders;
         }
 
         public IEnumerable<Toy> GetAllToys()
@@ -29,30 +50,44 @@ namespace Santa.Classes
 
         public Order GetOrder(string id)
         {
+            isValidID(id);
+
             IMongoCollection<Order> orderCollection = database.GetCollection<Order>("orders");
             return orderCollection.Find(_ => _.ID == id).FirstOrDefault();
         }
 
         public Toy GetToy(string id)
         {
+            isValidID(id);
+
             IMongoCollection<Toy> toyCollection = database.GetCollection<Toy>("toys");
             return toyCollection.Find(_ => _.ID == id).FirstOrDefault();
         }
 
         public User GetUser(User user)
         {
+            if (string.IsNullOrEmpty(user.Password))
+                throw new ArgumentNullException();
+
+            if (user.Password.Length != 128)
+                throw new ArgumentException();
+
+            Regex regex = new Regex("/[ ]+/");
+            if (regex.Match(user.Password).Success == true)
+                throw new ArgumentException();
+
+
             IMongoCollection<User> userCollection = database.GetCollection<User>("users");
             return userCollection.Find(_ => _.Email == user.Email && _.Password == user.Password).FirstOrDefault();
         }
 
         public bool UpdateOrder(Order order)
         {
-            if (order.ID == null)
-                throw new ArgumentNullException();
+            isValidID(order.ID);
+
             IMongoCollection<Order> orderCollection = database.GetCollection<Order>("orders");
             var filter = Builders<Order>.Filter.Eq("_id", ObjectId.Parse(order.ID));
-            var update = Builders<Order>.Update
-                .Set("status", order.Status);
+            var update = Builders<Order>.Update.Set("status", order.Status);
             try
             {
                 orderCollection.UpdateOne(filter, update);
@@ -62,6 +97,21 @@ namespace Santa.Classes
             {
                 return false;
             }
+
         }
+
+        private void isValidID(string id)
+        {
+            if (string.IsNullOrEmpty(id))
+                throw new ArgumentNullException();
+
+            if (id.Length != 24)
+                throw new ArgumentException();
+
+            Regex regex = new Regex("/[ ]+/");
+            if (regex.Match(id).Success == true)
+                throw new ArgumentException();
+        }
+
     }
 }

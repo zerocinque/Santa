@@ -18,11 +18,20 @@ namespace Santa.Classes
         public OrderStatus Status { get; set; }
 
         [BsonElement("toys")]
-        public IEnumerable<Object> Toys { get; set; }
+        public IEnumerable<Toy> Toys { get; set; }
 
         [BsonElement("requestDate")]
         [BsonDateTimeOptions(Kind = DateTimeKind.Local)]
         public DateTime RequestDate { get; set; }
 
+        public string ToysToString()
+        {
+            string msg = "";
+            foreach(Toy toy in Toys)
+            {
+                msg = string.Concat(msg, toy, "; ");
+            }
+            return msg;
+        }
     }
 }

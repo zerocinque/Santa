@@ -1,0 +1,73 @@
+﻿@using Santa.Models
+@model Santa.Classes.User
+
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    @Styles.Render("~/Content/font-awesome.min.css")
+    <script type="text/javascript" src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+
+    <title>Login</title>
+</head>
+<body>
+    <div class="container">
+        <div class="panel panel-default text-center">
+            <img class="panel-img-top" src="../../img/santa.png" alt="santa manager logo" style="height: 200px">
+            <div class="panel-body">
+                <h1>Sign in to Santa Manager</h1>
+                @using (Html.BeginForm("Home"))
+                {
+                    <form>
+                        @Html.AntiForgeryToken()
+                        @Html.ValidationSummary()
+                        <div class="row">
+                            <div class="col col-sm-6 col-sm-offset-3">
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        @Html.LabelFor(Model => Model.Email, "Email:", htmlAttributes: new { @class = "input-group-addon" })
+                                        @Html.LabelFor(Model => Model.Email, htmlAttributes: new { @class = "sr-only" })
+                                        @Html.EditorFor(Model => Model.Email, new { htmlAttributes = new { @class = "form-control", id = "textName", placeholder = "name@example.com", @type = "text" } })
+                                        @Html.ValidationMessageFor(Model => Model.Email, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col col-sm-6 col-sm-offset-3">
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        @Html.LabelFor(Model => Model.Email, "Password:", htmlAttributes: new { @class = "input-group-addon" })
+                                        @Html.LabelFor(Model => Model.Password, htmlAttributes: new { @class = "sr-only" })
+                                        @Html.EditorFor(Model => Model.Password, new { htmlAttributes = new { @class = "form-control", @type = "password", id = "textPass" } })
+                                        @Html.ValidationMessageFor(Model => Model.Password, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <button id="login" class="btn btn-lg btn-primary" type="submit">Sign in</button>
+
+                    </form>
+                }
+
+            </div>
+        </div>
+    </div>
+
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/jqueryval")
+
+
+</body>
+</html>

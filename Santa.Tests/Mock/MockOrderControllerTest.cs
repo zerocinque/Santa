@@ -8,16 +8,16 @@ using Santa.Classes;
 
 namespace Santa.Tests
 {
-    public class MockOrderControllerTest : Controller
+    public class MockControllerTest : Controller
     {
         private IDataBase db;
 
-        public MockOrderControllerTest(IDataBase dbParam)
+        public MockControllerTest(IDataBase dbParam)
         {
             db = dbParam;
         }
 
-        public ActionResult Edit(Order order)
+        public ActionResult OrderEdit(Order order)
         {
             db.UpdateOrder(order);
             return View();

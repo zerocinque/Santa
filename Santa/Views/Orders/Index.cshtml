@@ -1,0 +1,42 @@
+﻿@using Santa.Models
+@model Orders
+
+@{
+    ViewBag.Title = "Orders";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@{ 
+    string[] status =
+    {
+        "In progress",
+        "Ready to be send",
+        "Done"
+    };
+}
+
+<h2>Orders</h2>
+
+<table class="table">
+    <tr>
+        <th>Kid</th>
+        <th>Toys</th>
+        <th>Request Date</th>
+        <th>Status</th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model.EntityList) {
+    <tr>
+        <td>@item.Kid</td>
+        <td>@item.ToysToString()</td>
+        <td>@item.RequestDate.ToString("dd/MM/yyyy")</td>
+        <td>@status[item.Status.GetHashCode()]</td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { item.ID }) |
+            @Html.ActionLink("Details", "Details", new { item.ID })
+        </td>
+    </tr>
+}
+
+</table>

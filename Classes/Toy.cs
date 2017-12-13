@@ -18,5 +18,10 @@ namespace Santa.Classes
         [BsonElement("amount")]
         public int Amount { get; private set; }
 
+        public override string ToString()
+        {
+            return Name;
+        }
+
     }
 }

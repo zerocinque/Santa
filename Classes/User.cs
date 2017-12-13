@@ -8,18 +8,18 @@ namespace Santa.Classes
     {
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
-        public string ID { get; private set; }
+        public string ID { get; set; }
 
         [BsonElement("screenname")]
-        public string ScreenName { get; private set; }
+        public string ScreenName { get; set; }
 
         [BsonElement("email")]
-        public string Email { get; private set; }
+        public string Email { get; set; }
 
         [BsonElement("isAdmin")]
-        public string IsAdmini { get; private set; }
+        public bool IsAdmin { get; set; }
 
         [BsonElement("password")]
-        public string Password { get; private set; }
+        public string Password { get; set; }
     }
 }
