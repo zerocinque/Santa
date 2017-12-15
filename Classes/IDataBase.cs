@@ -11,6 +11,6 @@ namespace Santa.Classes
 
         Order GetOrder(string id);
         Toy GetToy(string id);
-        User GetUser(User user);
+        User GetUser(string email, string password);
     }
 }

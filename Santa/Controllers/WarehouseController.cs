@@ -7,6 +7,7 @@ using System.Web.Mvc;
 
 namespace Santa.Controllers
 {
+    [Authorize]
     public class WarehouseController : Controller
     {
         private IDataBase db;

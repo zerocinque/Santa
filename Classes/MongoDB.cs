@@ -64,21 +64,21 @@ namespace Santa.Classes
             return toyCollection.Find(_ => _.ID == id).FirstOrDefault();
         }
 
-        public User GetUser(User user)
+        public User GetUser(string email, string password)
         {
-            if (string.IsNullOrEmpty(user.Password))
+            if (string.IsNullOrEmpty(password))
                 throw new ArgumentNullException();
 
-            if (user.Password.Length != 128)
+            if (password.Length != 128)
                 throw new ArgumentException();
 
             Regex regex = new Regex("/[ ]+/");
-            if (regex.Match(user.Password).Success == true)
+            if (regex.Match(password).Success == true)
                 throw new ArgumentException();
 
 
             IMongoCollection<User> userCollection = database.GetCollection<User>("users");
-            return userCollection.Find(_ => _.Email == user.Email && _.Password == user.Password).FirstOrDefault();
+            return userCollection.Find(_ => _.Email == email && _.Password == password).FirstOrDefault();
         }
 
         public bool UpdateOrder(Order order)

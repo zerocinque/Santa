@@ -8,6 +8,7 @@ using System.Web.Mvc;
 
 namespace Santa.Controllers
 {
+    [Authorize]
     public class OrdersController : Controller
     {
         private IDataBase db;

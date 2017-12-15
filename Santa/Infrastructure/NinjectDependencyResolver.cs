@@ -1,5 +1,7 @@
 ﻿using Ninject;
 using Santa.Classes;
+using Santa.Infrastructure.Abstract;
+using Santa.Infrastructure.Concrete;
 using System;
 using System.Collections.Generic;
 using System.Web.Mvc;
@@ -20,6 +22,8 @@ namespace Santa.Infrastructure
         private void AddBindings()
         {
             kernel.Bind<IDataBase>().To<MongoDB>();
+            kernel.Bind<IAuthProvider>().To<FormsAuthProvider>();
+
         }
 
         public object GetService(Type serviceType)
