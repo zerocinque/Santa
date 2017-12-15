@@ -1,27 +1,28 @@
-﻿@model IEnumerable<Santa.Models.Warehouse>
+﻿@using Santa.Models
+@model Warehouse
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Warehouse";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Index</h2>
+<div class="row">
+    <h2 class="pull-left">Warehouse</h2>
+    @Html.ActionLink("Refresh", "Refresh", "Warehouse", htmlAttributes: new { @class = "btn btn-default pull-right", style = "margin: 20px 0 10px 0;" })
+</div>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
 <table class="table">
     <tr>
-        <th></th>
+        <th>Name</th>
+        <th>Amount</th>
+        <th>Price</th>
     </tr>
 
-@foreach (var item in Model) {
+@foreach (var item in Model.EntityList) {
     <tr>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-            @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-            @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
-        </td>
+        <td>@item.Name</td>
+        <td>@item.Amount</td>
+        <td>@item.Price</td>
     </tr>
 }
 

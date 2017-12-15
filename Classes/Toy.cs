@@ -13,7 +13,7 @@ namespace Santa.Classes
         public string Name { get; private set; }
 
         [BsonElement("cost")]
-        public string Price { get; private set; }
+        public double Price { get; private set; }
 
         [BsonElement("amount")]
         public int Amount { get; private set; }

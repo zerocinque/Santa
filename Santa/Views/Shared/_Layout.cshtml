@@ -1,4 +1,16 @@
-﻿<!DOCTYPE html>
+﻿@{ 
+    string userScreenName;
+    try
+    {
+        userScreenName = Session["SceenName"].ToString();
+    }
+    catch (NullReferenceException)
+    {
+        userScreenName = "Santa's Manager";
+    }
+}
+
+<!DOCTYPE html>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
@@ -17,7 +29,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                @Html.ActionLink("Nome applicazione", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+                @Html.ActionLink(userScreenName, "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
