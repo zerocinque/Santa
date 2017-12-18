@@ -1,0 +1,101 @@
+﻿@using Santa.Classes
+@model Santa.Classes.Order
+
+@{
+    string[] status =
+    {
+        "In progress",
+        "Ready to be send",
+        "Done"
+    };
+}
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="row">
+    <h2>Details</h2>
+    <hr />
+</div>
+
+<div class="row">
+    <div class="col-md-8">
+        <div class="panel panel-default">
+            <div class="panel-heading"><h3 class="panel-title">@Model.Kid</h3></div>
+            <div class="panel-body">
+                <dl class="dl-horizontal">
+                    <dt>@Html.DisplayNameFor(model => model.Toys)</dt>
+                    <dd>
+                        <ul class="list-group">
+                            @foreach (Toy toy in Model.Toys)
+                            {
+                                <li class="list-group-item">
+                                    <div class="row">
+                                        <div class="col-xs-6">
+                                            @toy.Name
+                                        </div>
+                                        <div class="col-xs-3">
+                                            @string.Concat("€ ", toy.Price.ToString())
+                                        </div>
+                                        <div class="col-xs-3">
+                                            @if (toy.Amount > 0)
+                                            {
+                                                <span class="label label-success">Available</span>
+                                            }
+                                            else
+                                            {
+                                                <span class="label label-danger">Stock Finish</span>
+                                            }
+                                        </div>
+                                    </div>
+                                </li>
+                            }
+                        </ul>
+                    </dd>
+                </dl>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="row">
+            <div class="panel panel-default">
+                <div class="panel-heading"><h3 class="panel-title">@Html.DisplayNameFor(model => model.RequestDate)</h3></div>
+                <div class="panel-body">@Model.RequestDate.ToString("dd/MM/yyyy")</div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="panel panel-default">
+                <div class="panel-heading"><h3 class="panel-title">@Html.DisplayNameFor(model => model.Status)</h3></div>
+                <div class="panel-body">@status[Model.Status.GetHashCode()]</div>
+            </div>
+        </div>
+        @if (Convert.ToBoolean(Session["Admin"]))
+        {
+            <div class="row">
+                <div class="panel panel-default">
+                    <div class="panel-heading"><h3 class="panel-title">Total</h3></div>
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-sm-8">
+                                <strong>Total Amount:</strong>
+                            </div>
+                            <div class="col-sm-4">
+                                @string.Concat("€ ", Model.TotalAmount.ToString())
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+<div class="row">
+    <p>
+        @Html.ActionLink("Edit", "Edit", new { id = Model.ID }) |
+        @Html.ActionLink("Back to List", "Index")
+    </p>
+</div>

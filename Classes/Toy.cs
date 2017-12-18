@@ -7,16 +7,16 @@ namespace Santa.Classes
     {
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
-        public string ID { get; private set; }
+        public string ID { get; set; }
 
         [BsonElement("name")]
-        public string Name { get; private set; }
+        public string Name { get; set; }
 
         [BsonElement("cost")]
-        public double Price { get; private set; }
+        public double Price { get; set; }
 
         [BsonElement("amount")]
-        public int Amount { get; private set; }
+        public int Amount { get; set; }
 
         public override string ToString()
         {

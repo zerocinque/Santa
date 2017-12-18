@@ -167,6 +167,7 @@
     <Compile Include="Infrastructure\Abstract\IAuthProvider.cs" />
     <Compile Include="Infrastructure\Concrete\FormsAuthProvider.cs" />
     <Compile Include="Infrastructure\NinjectDependencyResolver.cs" />
+    <Compile Include="Models\Statistics.cs" />
     <Compile Include="Models\UserLogin.cs" />
     <Compile Include="Models\Orders.cs" />
     <Compile Include="Models\Warehouse.cs" />
@@ -187,6 +188,7 @@
     <Content Include="ApplicationInsights.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="img\santa.svg" />
     <Content Include="img\santa.ico" />
     <Content Include="img\santa.png" />
     <Content Include="My.config" />
@@ -232,6 +234,7 @@
     <Content Include="Views\Users\Login.cshtml" />
     <Content Include="Views\Orders\Index.cshtml" />
     <Content Include="Views\Warehouse\Index.cshtml" />
+    <Content Include="Views\Orders\Details.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

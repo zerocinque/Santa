@@ -32,7 +32,7 @@ namespace Santa.Controllers
                 if (loggedUser != null)
                 {
                     Session["ScreenName"] = loggedUser.ScreenName;
-                    Session["admin"] = loggedUser.IsAdmin;
+                    Session["Admin"] = loggedUser.IsAdmin;
                     return Redirect(returnUrl ?? Url.Action("Index", "Home"));
                 }
                 else

@@ -2,6 +2,7 @@
 using MongoDB.Bson.Serialization.Attributes;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 
 namespace Santa.Classes
 {
@@ -18,11 +19,28 @@ namespace Santa.Classes
         public OrderStatus Status { get; set; }
 
         [BsonElement("toys")]
-        public IEnumerable<Toy> Toys { get; set; }
+        public List<Toy> Toys { get; set; }
 
         [BsonElement("requestDate")]
         [BsonDateTimeOptions(Kind = DateTimeKind.Local)]
+        [DisplayName("Request date")]
         public DateTime RequestDate { get; set; }
+
+        [BsonIgnore]
+        public double TotalAmount { get; set; }
+
+        [BsonIgnore]
+        public bool IsPreparable { get; set; }
+
+        public void CountTotalAmount()
+        {
+            double total = 0;
+            foreach(Toy toy in this.Toys)
+            {
+                total += toy.Price;
+            }
+            TotalAmount = total;
+        }
 
         public string ToysToString()
         {

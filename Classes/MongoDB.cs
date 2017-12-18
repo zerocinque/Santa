@@ -19,8 +19,10 @@ namespace Santa.Classes
         public IEnumerable<Order> GetAllOrders()
         {
             IMongoCollection<Order> orderCollection = database.GetCollection<Order>("orders");
-            List<Order> orders = orderCollection.Find(new BsonDocument()).ToList();
-            foreach(Order order in orders)
+            List<Order> orders = orderCollection.Find(new BsonDocument()).SortBy(_ => _.RequestDate).ToList();
+            List<Toy> warehouse = (List<Toy>)GetAllToys();
+
+            foreach (Order order in orders)
             {
                 List<Toy> distinctToys = new List<Toy>();
                 foreach(Toy originalToy in order.Toys)
@@ -38,6 +40,43 @@ namespace Santa.Classes
                         distinctToys.Add(originalToy);
                 }
                 order.Toys = distinctToys;
+                for (int i = 0; i < order.Toys.Count; i++)
+                {
+                    order.Toys[i] = this.GetToyByName(order.Toys[i].Name);
+                }
+
+                int flagPreparable = 0;
+                foreach (Toy toy in order.Toys)
+                {
+                    foreach (Toy warehouseToy in warehouse)
+                    {
+                        if (warehouseToy.ID == toy.ID && warehouseToy.Amount < 0)
+                        {
+                            flagPreparable = -1;
+                            break;
+                        }
+
+                        else if (warehouseToy.ID == toy.ID && warehouseToy.Amount > 0)
+                        {
+                            flagPreparable = 1;
+                            break;
+                        }
+                    }
+
+                    if (flagPreparable != 1)
+                    {
+                        flagPreparable = -1;
+                        break;
+                    }
+
+                    flagPreparable = 0;
+                }
+
+                if (flagPreparable == -1)
+                    order.IsPreparable = false;
+                else
+                    order.IsPreparable = true;
+
             }
             return orders;
         }
@@ -64,6 +103,13 @@ namespace Santa.Classes
             return toyCollection.Find(_ => _.ID == id).FirstOrDefault();
         }
 
+        public Toy GetToyByName(string name)
+        {
+            IMongoCollection<Toy> toyCollection = database.GetCollection<Toy>("toys");
+            return toyCollection.Find(_ => _.Name == name).First();
+        }
+
+
         public User GetUser(string email, string password)
         {
             if (string.IsNullOrEmpty(password))
@@ -79,6 +125,27 @@ namespace Santa.Classes
 
             IMongoCollection<User> userCollection = database.GetCollection<User>("users");
             return userCollection.Find(_ => _.Email == email && _.Password == password).FirstOrDefault();
+        }
+
+        public bool UpdateAllToys(IEnumerable<Toy> toys)
+        {
+            foreach(Toy toy in toys)
+            {
+                isValidID(toy.ID);
+
+                IMongoCollection<Order> orderCollection = database.GetCollection<Order>("orders");
+                var filter = Builders<Order>.Filter.Eq("_id", ObjectId.Parse(toy.ID));
+                var update = Builders<Order>.Update.Set("amount", toy.Amount);
+                try
+                {
+                    orderCollection.UpdateOne(filter, update);
+                }
+                catch (Exception)
+                {
+                    return false;
+                }
+            }
+            return true;
         }
 
         public bool UpdateOrder(Order order)

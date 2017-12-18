@@ -6,7 +6,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-@{ 
+@{
     string[] status =
     {
         "In progress",
@@ -15,7 +15,18 @@
     };
 }
 
-<h2>Orders</h2>
+<div class="row">
+    <h2 class="col-sm-9">Orders</h2>
+    <div class="col-xs-4 col-sm-1">
+        <a href="@Url.Action("Refresh", "Orders")" class="btn btn-default" style="margin: 20px 0 10px 0" title="Refresh"><i class="fa fa-refresh" aria-hidden="true"></i></a>
+    </div>
+    <div class="col-xs-4 col-sm-1">
+        <a href="@Url.Action("PrepareAll", "Orders")" class="btn btn-success" style="margin: 20px 0 10px 0" title="Prepare All The Possible Orders"><i class="fa fa-cubes" aria-hidden="true"></i></a>
+    </div>
+    <div class="col-xs-4 col-sm-1">
+        <a href="@Url.Action("SendAll", "Orders")" class="btn btn-primary" style="margin: 20px 0 10px 0" title="Send All The Possible Orders"><i class="fa fa-send" aria-hidden="true"></i></a>
+    </div>
+</div>
 
 <table class="table">
     <tr>
@@ -33,10 +44,29 @@
         <td>@item.RequestDate.ToString("dd/MM/yyyy")</td>
         <td>@status[item.Status.GetHashCode()]</td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { item.ID }) |
-            @Html.ActionLink("Details", "Details", new { item.ID })
+            <div class="btn-group" role="group">
+                @if (!Convert.ToBoolean(Session["Admin"]))
+                {
+                    if (item.Status == Santa.Classes.OrderStatus.InProgress)
+                    {
+                        if (item.IsPreparable)
+                        {
+                            <a type="button" class="btn btn-success btn-xs" href="@Url.Action("Prepare", "Orders", new { item.ID })" data-toggle="tooltip" title="Prepare"><i class="fa fa-cube"></i></a>
+                        }
+                        else
+                        {
+                            <a type="button" class="btn btn-success btn-xs disabled" href="@Url.Action("Prepare", "Orders", new { item.ID })" data-toggle="tooltip" title="Prepare" style="pointer-events: none; cursor: default;"><i class="fa fa-cube"></i></a>
+                        }
+                    }
+                    else if (item.Status == Santa.Classes.OrderStatus.ReadyToBeSend)
+                    {
+                        <a type="button" class="btn btn-primary btn-xs" href="@Url.Action("Send", "Orders", new { item.ID })" data-toggle="tooltip" title="Send"><i class="fa fa-send"></i></a>
+                    }
+                }
+                <a type="button" class="btn btn-info btn-xs" href="@Url.Action("Details", "Orders", new { item.ID })" data-toggle="tooltip" title="Details"><i class="fa fa-eye"></i></a>
+            </div>
         </td>
     </tr>
 }
-
 </table>
+
